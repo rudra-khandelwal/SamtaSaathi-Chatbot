@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SamtaSaathi — Chat</title>
+
+  <!-- Inter font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: white;
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    body.loaded { opacity: 1; transform: translateY(0); }
+    body.fade-out { opacity: 0; transform: translateY(20px); }
+
+    /* Bubbles */
+    .bubble {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      box-shadow: 0 4px 15px rgba(255,255,255,0.15);
+      z-index: 1;
+    }
+    .bubble-left { width: 120px; height: 120px; bottom: -40px; left: -40px; }
+    .bubble-right-big { width: 180px; height: 180px; bottom: -60px; right: -60px; }
+    .bubble-right-small { width: 100px; height: 100px; bottom: 20px; right: 40px; }
+
+    /* Back button */
+    .back-btn {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background-color: white;
+      color: #2575fc;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 0.9em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, color 0.3s ease, border 0.3s ease;
+      z-index: 5;
+      text-decoration: none;
+    }
+    .back-btn:hover {
+      background-color: transparent;
+      color: white;
+      border: 2px solid white;
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+    }
+    .back-btn svg { width: 16px; height: 16px; fill: currentColor; }
+
+    /* Chat container */
+    .chat-container {
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(15px);
+      border-radius: 15px;
+      width: 90%;
+      max-width: 800px;
+      height: 85vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+      overflow: hidden;
+      position: relative;
+      z-index: 2;
+      transition: opacity 1s ease-in-out;
+    }
+
+    .chat-header { 
+      padding: 15px 20px;
+      font-size: 1.4em;
+      font-weight: 600;
+      background: rgba(0,0,0,0.2);
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+      display: flex;
+      align-items: center;
+    }
+    .chat-header img { height: 28px; margin-right: 10px; }
+
+    .chat-box {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      font-family: 'Inter', sans-serif;
+      color: white;
+    }
+    .message {
+      max-width: 75%;
+      padding: 12px 18px;
+      border-radius: 20px;
+      font-size: 1em;
+      line-height: 1.4;
+      animation: fadeIn 0.3s ease;
+      word-break: break-word;
+    }
+    .user-message { background: rgba(255,255,255,0.9); color: #2575fc; align-self: flex-end; border-bottom-right-radius: 5px; }
+    .bot-message { background: rgba(37,117,252,0.9); color: white; align-self: flex-start; border-bottom-left-radius: 5px; }
+
+    .chat-input-container {
+      display: flex;
+      padding: 15px;
+      background: rgba(0,0,0,0.15);
+      border-top: 1px solid rgba(255,255,255,0.2);
+      backdrop-filter: blur(8px);
+    }
+    .chat-input { 
+      flex: 1; 
+      padding: 12px 15px; 
+      border: none; 
+      border-radius: 25px; 
+      font-size: 1em; 
+      outline: none; 
+      font-family: 'Inter', sans-serif;
+      background: rgba(255,255,255,0.12);
+      color: white;
+    }
+
+    /* Send button styling like input */
+    .send-btn {
+      background-color: rgba(255,255,255,0.8);
+      color: #2575fc;
+      border: none;
+      margin-left: 10px;
+      padding: 12px 20px;
+      border-radius: 25px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .send-btn:hover {
+      background-color: rgba(255,255,255,0.95);
+      color: #2575fc;
+      transform: scale(1.05);
+    }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px);} to { opacity: 1; transform: translateY(0); } }
+    .chat-box::-webkit-scrollbar { width: 8px; }
+    .chat-box::-webkit-scrollbar-thumb { background-color: rgba(255,255,255,0.4); border-radius: 4px; }
+
+    .goodbye-overlay {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.85); color: white; display: flex;
+      justify-content: center; align-items: center;
+      font-size: 1.6em; text-align: center; opacity: 0; transition: opacity 1s ease-in-out;
+      z-index: 10; padding: 32px 24px; pointer-events: none;
+      word-break: break-word; line-height: 1.25; box-sizing: border-box;
+    }
+    @media (max-width: 600px) { .goodbye-overlay { font-size: 1em; padding: 16px 8px; } }
+
+  </style>
+</head>
+<body>
+  <!-- Bubbles -->
+  <div class="bubble bubble-left"></div>
+  <div class="bubble bubble-right-big"></div>
+  <div class="bubble bubble-right-small"></div>
+
+  <!-- Back button -->
+  <a href="/" class="back-btn">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Back
+  </a>
+
+  <div class="chat-container" id="chatContainer">
+    <div class="chat-header">
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo">
+      SamtaSaathi
+    </div>
+    <div class="chat-box" id="chat-box">
+      <!-- Initial bot message from backend -->
+      <div class="message bot-message">{{ initial_message }}</div>
+    </div>
+    <div class="chat-input-container">
+      <input type="text" id="chat-input" class="chat-input" placeholder="Type a message..." />
+      <button class="send-btn" id="send-btn">Send</button>
+    </div>
+    <div class="goodbye-overlay" id="goodbyeOverlay">
+      SamtaSaathi: Thank you for visiting Samta Foundation.<br>Have a great day!
+    </div>
+  </div>
+
+  <script>
+    window.addEventListener("pageshow", function(event) {
+      if (event.persisted) { window.location.reload(); }
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+      document.body.classList.add("loaded");
+
+      const chatBox = document.getElementById("chat-box");
+      const inputField = document.getElementById("chat-input");
+      const sendButton = document.getElementById("send-btn");
+      const goodbyeOverlay = document.getElementById("goodbyeOverlay");
+      const chatContainer = document.getElementById("chatContainer");
+
+      // ✅ NEW: Check if a ?q= parameter is in URL and auto-send it
+      const urlParams = new URLSearchParams(window.location.search);
+      const query = urlParams.get('q');
+      if (query) {
+        inputField.value = query;
+        sendMessage(); // Automatically send to bot
+      }
+
+      function appendMessage(sender, text) {
+        const msgDiv = document.createElement("div");
+        msgDiv.classList.add("message", sender === "user" ? "user-message" : "bot-message");
+        msgDiv.innerHTML = sender === "bot" ? text.replace(/\n/g, "<br>") : text;
+        chatBox.appendChild(msgDiv);
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }
+
+      function sendMessage() {
+        let originalMessage = inputField.value.trim(); // Preserve original for display
+        if (!originalMessage) return;
+
+        appendMessage("user", originalMessage); // Display as typed
+
+        let messageForBot = originalMessage.toLowerCase(); // Convert lowercase for processing
+        inputField.value = "";
+
+        fetch("/get_response", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: messageForBot }) // Send lowercase to bot
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.replies && data.replies[0] === "__openlink__" && data.replies[1]) {
+            window.open(data.replies[1], "_blank");
+            appendMessage("bot", "Opening link: " + data.replies[1]);
+            return;
+          }
+          
+          appendMessage("bot", data.reply || "No reply.");
+          if (data.exit) {
+            goodbyeOverlay.style.opacity = 1;
+            goodbyeOverlay.style.pointerEvents = "auto";
+            setTimeout(() => { chatContainer.style.opacity = 0; }, 1500);
+            setTimeout(() => {
+              document.body.classList.remove("loaded");
+              document.body.classList.add("fade-out");
+              setTimeout(() => { window.location.href = "/"; }, 300);
+            }, 3000);
+          }
+        });
+      }
+
+
+      sendButton.addEventListener("click", sendMessage);
+      inputField.addEventListener("keydown", e => {
+        if (e.key === "Enter" && !e.shiftKey) {
+          e.preventDefault();
+          sendMessage();
+        }
+      });
+    });
+  </script>
+</body>
+</html>
+  

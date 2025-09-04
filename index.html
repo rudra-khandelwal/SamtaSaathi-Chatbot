@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SamtaSaathi — Home</title>
+  <style>
+    /* Page transition effect */
+    body {
+      margin: 0;
+      font-family: "Segoe UI", sans-serif;
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    body.loaded {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    body.fade-out {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .container {
+      text-align: center;
+      max-width: 600px;
+      width: 90%;
+      position: relative;
+      z-index: 2;
+    }
+    .logo {
+      max-width: 200px;
+      margin-bottom: 30px;
+    }
+    h1 {
+      margin-bottom: 10px;
+    }
+    p {
+      margin-bottom: 30px;
+      font-size: 1.1em;
+    }
+
+    /* Buttons with original animations */
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+    .buttons a {
+      text-decoration: none;
+    }
+    .buttons button {
+      background-color: white;
+      color: #2575fc;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 1em;
+      font-weight: bold;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, color 0.3s ease, border 0.3s ease;
+      animation: fadeSlideUp 0.8s ease forwards;
+    }
+    .buttons button:hover {
+      background-color: transparent;
+      color: white;
+      border: 2px solid white;
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+    }
+    /* Fade + slide-up animation for buttons */
+    @keyframes fadeSlideUp {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    /* Delay animations for each button */
+    .buttons a:nth-child(1) button { animation-delay: 0.1s; }
+    .buttons a:nth-child(2) button { animation-delay: 0.2s; }
+    .buttons a:nth-child(3) button { animation-delay: 0.3s; }
+    .buttons a:nth-child(4) button { animation-delay: 0.4s; }
+
+    /* Premium glassy bubbles */
+    .bubble {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      box-shadow: 0 4px 15px rgba(255, 255, 255, 0.15);
+      z-index: 1;
+    }
+    .bubble-left {
+      width: 120px;
+      height: 120px;
+      bottom: -40px;
+      left: -40px;
+    }
+    .bubble-right-big {
+      width: 180px;
+      height: 180px;
+      bottom: -60px;
+      right: -60px;
+    }
+    .bubble-right-small {
+      width: 100px;
+      height: 100px;
+      bottom: 20px;
+      right: 40px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Glassy bubbles -->
+  <div class="bubble bubble-left"></div>
+  <div class="bubble bubble-right-big"></div>
+  <div class="bubble bubble-right-small"></div>
+
+  <div class="container">
+    <img src="{{ url_for('static', filename='samta-logo.png') }}" alt="SamtaSaathi Logo" class="logo" />
+    <h1>Welcome to SamtaSaathi</h1>
+    <p>Your friendly companion for information and support.</p>
+    <div class="buttons">
+        <a href="{{ url_for('start_chat') }}"><button>Start Chat</button></a>
+        <a href="{{ url_for('about') }}"><button>About Us</button></a>
+        <a href="{{ url_for('contact_page') }}"><button>Contact</button></a>
+        <a href="{{ url_for('help_page') }}"><button>Help</button></a>
+    </div>
+  </div>
+
+  <script>
+    // Fix: Reload page if loaded from back/forward cache
+    window.addEventListener("pageshow", function(event) {
+      if (event.persisted) {
+        window.location.reload();
+      }
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+      document.body.classList.add("loaded");
+      document.querySelectorAll("a").forEach(link => {
+        if (link.hostname === window.location.hostname) {
+          link.addEventListener("click", function (e) {
+            if (link.getAttribute("target") === "_blank") return;
+            e.preventDefault();
+            document.body.classList.remove("loaded");
+            document.body.classList.add("fade-out");
+            setTimeout(() => { window.location = link.href; }, 300);
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
+ 

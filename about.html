@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SamtaSaathi — About Us</title>
+
+  <!-- Inter font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: white;
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    body.loaded { opacity: 1; transform: translateY(0); }
+    body.fade-out { opacity: 0; transform: translateY(20px); }
+
+    /* Bubbles */
+    .bubble {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      box-shadow: 0 4px 15px rgba(255,255,255,0.15);
+      z-index: 1;
+    }
+    .bubble-left { width: 120px; height: 120px; bottom: -40px; left: -40px; }
+    .bubble-right-big { width: 180px; height: 180px; bottom: -60px; right: -60px; }
+    .bubble-right-small { width: 100px; height: 100px; bottom: 20px; right: 40px; }
+
+    /* Back button */
+    .back-btn {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background-color: white;
+      color: #2575fc;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 0.9em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, color 0.3s ease, border 0.3s ease;
+      z-index: 5;
+      text-decoration: none;
+    }
+    .back-btn:hover {
+      background-color: transparent;
+      color: white;
+      border: 2px solid white;
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+    }
+    .back-btn svg { width: 16px; height: 16px; fill: currentColor; }
+
+    /* About container */
+    .about-container {
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(15px);
+      border-radius: 15px;
+      width: 90%;
+      max-width: 800px;
+      height: 85vh;
+      overflow-y: auto;
+      padding: 30px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+      position: relative;
+      z-index: 2;
+      color: white;
+      line-height: 1.6;
+      scroll-behavior: smooth;
+    }
+
+    /* Scrollbar styling */
+    .about-container::-webkit-scrollbar { width: 10px; }
+    .about-container::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 10px; }
+    .about-container::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 10px; }
+    .about-container::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.5); }
+
+    h1, h2 { font-weight: 600; margin-bottom: 15px; }
+    h1 { font-size: 1.8em; }
+    h2 { font-size: 1.5em; margin-top: 20px; }
+    p { margin-bottom: 12px; font-size: 1.1em; }
+    .highlight { font-weight: 600; color: #fff; }
+
+    .founder-container {
+      display: flex;
+      gap: 20px;
+      margin-top: 20px;
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .founder-container img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 2px solid white;
+    }
+    .founder-container .founder-info { flex: 1; min-width: 200px; }
+
+    .logo-carousel {
+      width: 100%;
+      overflow: hidden;
+      margin-top: 40px;
+      border-radius: 15px;
+      background: rgba(255,255,255,0.05);
+      padding: 15px 0;
+    }
+    .logo-track {
+      display: flex;
+      gap: 40px;
+      animation: scrollLogos 20s linear infinite;
+    }
+    .logo-track img { height: 80px; object-fit: contain; }
+    @keyframes scrollLogos { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+    @media (max-width: 600px) {
+      .about-container { padding: 20px; }
+      h1 { font-size: 1.5em; }
+      h2 { font-size: 1.3em; }
+      p { font-size: 1em; }
+      .founder-container { flex-direction: column; align-items: center; text-align: center; }
+      .founder-container img { width: 120px; height: 120px; }
+      .logo-track img { height: 50px; }
+      .logo-track { gap: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Bubbles -->
+  <div class="bubble bubble-left"></div>
+  <div class="bubble bubble-right-big"></div>
+  <div class="bubble bubble-right-small"></div>
+
+  <!-- Back button -->
+  <a href="/" class="back-btn">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Back
+  </a>
+
+  <!-- About content -->
+  <div class="about-container">
+    <h1>About Samta Foundation</h1>
+
+    <h2>Our Vision</h2>
+    <p>Making rural and tribal communities healthy, literate, and self-reliant; and working with prisoners to improve their quality of life.</p>
+
+    <h2>Our Mission</h2>
+    <p>Ensure that aid reaches exactly where, when, and how it is needed and create value for our society by applying real-world solutions.</p>
+
+    <h2>Our Philosophy</h2>
+    <p>Founded in 2012, we work upward from the basics, creating systems designed with beneficiaries in mind. Our strength lies in consistency, planning programs at regular intervals to address real needs.</p>
+    <p>This ensures complete life-cycle management across our various initiatives, providing sustainable impact for the communities we serve.</p>
+
+    <!-- Founder Section -->
+    <h2>Founder</h2>
+    <div class="founder-container">
+      <img src="{{ url_for('static', filename='founder\'s_photo.jpeg') }}" alt="Founder Photo">
+      <div class="founder-info">
+        <p><strong>Purushottam Agrawal</strong></p>
+        <p>Founder and Principal Trustee</p>
+        <p>His innovative approach to social reform is at the heart of Samta Foundation.</p>
+        <p>He has been awarded by the Honourable Vice President of India with the prestigious Champions of Change 2018 Award, Social Activist, Maharashtra, for the work done in the Washim District, Maharashtra.</p>
+      </div>
+    </div>
+
+    <!-- Samta Group logos -->
+    <h2>Samta Group</h2>
+    <div class="logo-carousel">
+      <div class="logo-track">
+        <img src="{{ url_for('static', filename='samta-logo.png') }}" alt="Samta Foundation">
+        <img src="{{ url_for('static', filename='samta_proto9.png') }}" alt="Proto9">
+        <img src="{{ url_for('static', filename='samta_mines.png') }}" alt="Samtamines">
+        <img src="{{ url_for('static', filename='samta_gencrest.png') }}" alt="Gencrest">
+        <img src="{{ url_for('static', filename='samta_enegry.png') }}" alt="Samta Energy">
+        <!-- Duplicate for seamless loop -->
+        <img src="{{ url_for('static', filename='samta-logo.png') }}" alt="Samta Foundation">
+        <img src="{{ url_for('static', filename='samta_proto9.png') }}" alt="Proto9">
+        <img src="{{ url_for('static', filename='samta_mines.png') }}" alt="Samtamines">
+        <img src="{{ url_for('static', filename='samta_gencrest.png') }}" alt="Gencrest">
+        <img src="{{ url_for('static', filename='samta_enegry.png') }}" alt="Samta Energy">
+        <!-- Duplicate for seamless loop -->
+        <img src="{{ url_for('static', filename='samta-logo.png') }}" alt="Samta Foundation">
+        <img src="{{ url_for('static', filename='samta_proto9.png') }}" alt="Proto9">
+        <img src="{{ url_for('static', filename='samta_mines.png') }}" alt="Samtamines">
+        <img src="{{ url_for('static', filename='samta_gencrest.png') }}" alt="Gencrest">
+        <img src="{{ url_for('static', filename='samta_enegry.png') }}" alt="Samta Energy">
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Reload when coming from bfcache/back-forward
+    window.addEventListener("pageshow", function(event) {
+      if (event.persisted) { window.location.reload(); }
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+      document.body.classList.add("loaded");
+
+      // Smooth fade-out for internal links (same-host navigation)
+      document.querySelectorAll("a").forEach(link => {
+        // preserve external links and target=_blank
+        try {
+          const linkHostMatches = (link.hostname === window.location.hostname);
+          const target = link.getAttribute("target");
+          if (linkHostMatches && target !== "_blank") {
+            link.addEventListener("click", function (e) {
+              const href = this.getAttribute("href");
+              if (!href) return;
+              // allow anchors (#) to behave normally
+              if (href.startsWith("#")) return;
+              e.preventDefault();
+              document.body.classList.remove("loaded");
+              document.body.classList.add("fade-out");
+              setTimeout(() => { window.location.href = href; }, 300);
+            });
+          }
+        } catch (err) {
+          // ignore any URL parsing errors, don't break navigation
+        }
+      });
+    });
+  </script>
+</body>
+</html>
+ 

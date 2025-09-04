@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SamtaSaathi — Help</title>
+
+  <!-- Inter font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      color: white;
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    body.loaded { opacity: 1; transform: translateY(0); }
+    body.fade-out { opacity: 0; transform: translateY(20px); }
+
+    /* Bubbles */
+    .bubble {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      box-shadow: 0 4px 15px rgba(255,255,255,0.15);
+      z-index: 1;
+    }
+    .bubble-left { width: 120px; height: 120px; bottom: -40px; left: -40px; }
+    .bubble-right-big { width: 180px; height: 180px; bottom: -60px; right: -60px; }
+    .bubble-right-small { width: 100px; height: 100px; bottom: 20px; right: 40px; }
+
+    /* Back button */
+    .back-btn {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background-color: white;
+      color: #2575fc;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 0.9em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, color 0.3s ease, border 0.3s ease;
+      z-index: 5;
+      text-decoration: none;
+    }
+    .back-btn:hover {
+      background-color: transparent;
+      color: white;
+      border: 2px solid white;
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+    }
+    .back-btn svg { width: 16px; height: 16px; fill: currentColor; }
+
+    /* Help container */
+    .help-container {
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(15px);
+      border-radius: 15px;
+      width: 90%;
+      max-width: 800px;
+      max-height: 85vh;
+      padding: 30px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+      position: relative;
+      z-index: 2;
+      overflow-y: auto;
+      color: white;
+    }
+
+    .help-container h1 {
+      text-align: center;
+      margin-bottom: 25px;
+      font-size: 2em;
+      background: linear-gradient(90deg, #fff, #fff, #fff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradientGlow 3s ease-in-out infinite;
+    }
+
+    h2 {
+      font-size: 1.4em;
+      margin-top: 25px;
+      margin-bottom: 10px;
+      color: white;
+    }
+
+    .question {
+      margin: 8px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255,255,255,0.05);
+      padding: 8px 12px;
+      border-radius: 12px;
+      line-height: 1.4;
+      color: white;
+    }
+    .question button {
+      background-color: rgba(255,255,255,0.2);
+      border: none;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.2s;
+      font-weight: bold;
+    }
+    .question button:hover { background-color: rgba(255,255,255,0.4); }
+
+    @keyframes gradientGlow {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    /* Scrollbar */
+    .help-container::-webkit-scrollbar { width: 8px; }
+    .help-container::-webkit-scrollbar-thumb { background-color: rgba(255,255,255,0.3); border-radius: 4px; }
+
+  </style>
+</head>
+<body>
+  <!-- Bubbles -->
+  <div class="bubble bubble-left"></div>
+  <div class="bubble bubble-right-big"></div>
+  <div class="bubble bubble-right-small"></div>
+
+  <!-- Back button -->
+  <a href="/" class="back-btn">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Back
+  </a>
+
+  <div class="help-container">
+    <h1>Help</h1>
+
+    <h2>Courses</h2>
+    <div class="question">1. How many courses do you have ? <button onclick="sendToChat(this)">></button></div>
+    <div class="question">2. Which courses you provide ? <button onclick="sendToChat(this)">></button></div>
+    <div class="question">3. What is the duration of courses ? <button onclick="sendToChat(this)">></button></div>
+    <div class="question">4. Are there any exam for the course ? <button onclick="sendToChat(this)">></button></div>
+    <div class="question">5. What is the registration process for courses ? <button onclick="sendToChat(this)">></button></div>
+    <div class="question">6. What is the registration process for admission ? <button onclick="sendToChat(this)">></button></div>
+    <div class="question">7. Will I receive the certificate of the course ? <button onclick="sendToChat(this)">></button></div>
+    <div class="question">8. What is the mode of the courses ? <button onclick="sendToChat(this)">></button></div>
+    <div class="question">9. What is Courses registration fee ? <button onclick="sendToChat(this)">></button></div>
+    <div class="question">10. Do you teach MS Office, Python, Java ? <button onclick="sendToChat(this)">></button></div>
+    <div class="question">11. Is there any age requirement ? <button onclick="sendToChat(this)">></button></div>
+    <div class="question">12. Is there any age requirement for admission ? <button onclick="sendToChat(this)">></button></div>
+
+    <h2>Risod Institute</h2>
+    <div class="question">1. Tell me about Risod Institute? <button onclick="sendToChat(this)">></button></div>
+    <div class="question">2. Who runs the Risod Institute? <button onclick="sendToChat(this)">></button></div>
+    <div class="question">3. I want Risod Institute contact, Risod Institute address. <button onclick="sendToChat(this)">></button></div>
+    <div class="question">4. Tell me about Risod Institute staff. <button onclick="sendToChat(this)">></button></div>
+    <div class="question">5. The infrastructure of Risod Institute. <button onclick="sendToChat(this)">></button></div>
+    <div class="question">6. Tell me about the history of the Institute. <button onclick="sendToChat(this)">></button></div>
+    <div class="question">7. What is the history of Risod Institute ? <button onclick="sendToChat(this)">></button></div>
+    <div class="question">8. Tell me about Samta Foundation Institute. <button onclick="sendToChat(this)">></button></div>
+    <div class="question">9. What is MASTI ? <button onclick="sendToChat(this)">></button></div>
+
+    <h2>Samta</h2>
+    <div class="question">1. Who was Samta ? <button onclick="sendToChat(this)">></button></div>
+    <div class="question">2. The history of Samta Foundation. <button onclick="sendToChat(this)">></button></div>
+    <div class="question">3. The story of Samta Foundation. <button onclick="sendToChat(this)">></button></div>
+    <div class="question">4. Why foundation named after Samta? <button onclick="sendToChat(this)">></button></div>
+
+    <h2>Location</h2>
+    <div class="question">1. Where is Risod Institute. <button onclick="sendToChat(this)">></button></div>
+    <div class="question">2. Where is Samta Foundation. <button onclick="sendToChat(this)">></button></div>
+    <div class="question">3. Where to visit? <button onclick="sendToChat(this)">></button></div>
+
+    <h2>Samta Group</h2>
+    <div class="question">1. What is Samta Group ? <button onclick="sendToChat(this)">></button></div>
+    <div class="question">2. The purpose of Samta Group. <button onclick="sendToChat(this)">></button></div>
+    <div class="question">3. Who is the founder of Samta Group? <button onclick="sendToChat(this)">></button></div>
+    <div class="question">4. Who runs Samta Group? <button onclick="sendToChat(this)">></button></div>
+    <div class="question">5. The location of Samta Group. <button onclick="sendToChat(this)">></button></div>
+
+    <h2>Foundation</h2>
+    <div class="question">1. Who is the founder of Samta Foundation ? <button onclick="sendToChat(this)">></button></div>
+    <div class="question">2. The purpose of Samta Foundation. <button onclick="sendToChat(this)">></button></div>
+    <div class="question">3. When was Samta Foundation established ? <button onclick="sendToChat(this)">></button></div>
+    <div class="question">4. How many branches does Samta Foundation has ? <button onclick="sendToChat(this)">></button></div>
+
+  </div>
+
+  <script>
+    // Reload page if loaded from back/forward cache
+    window.addEventListener("pageshow", function(event) {
+      if (event.persisted) { window.location.reload(); }
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+      document.body.classList.add("loaded");
+
+      // add fade-out for internal links (same-host)
+      document.querySelectorAll("a").forEach(link => {
+        try {
+          const sameHost = (link.hostname === window.location.hostname);
+          const target = link.getAttribute("target");
+          if (sameHost && target !== "_blank") {
+            link.addEventListener("click", function (e) {
+              const href = this.getAttribute("href");
+              if (!href) return;
+              if (href.startsWith("#")) return;
+              e.preventDefault();
+              document.body.classList.remove("loaded");
+              document.body.classList.add("fade-out");
+              setTimeout(() => { window.location.href = href; }, 300);
+            });
+          }
+        } catch (err) {
+          // ignore
+        }
+      });
+    });
+
+    function sendToChat(btn) {
+      let text = btn.parentElement.textContent.replace('>', '').trim();
+      text = text.replace(/^\d+\.\s*/, ''); // remove "1. "
+      // Go to start chat page with q param (start_chat.html will auto-send)
+      window.location.href = `/start-chat?q=${encodeURIComponent(text)}`;
+    }
+  </script>
+</body>
+</html>
+ 

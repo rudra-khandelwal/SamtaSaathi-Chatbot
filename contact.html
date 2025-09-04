@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SamtaSaathi — Contact Us</title>
+
+  <!-- Inter font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      display: flex;
+      justify-content: center;
+      align-items: center; /* vertically center */
+      min-height: 100vh;
+      color: white;
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      position: relative;
+      overflow: hidden;
+      box-sizing: border-box;
+    }
+    body.loaded { opacity: 1; transform: translateY(0); }
+    body.fade-out { opacity: 0; transform: translateY(20px); }
+
+    /* Bubbles */
+    .bubble {
+      position: fixed;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      box-shadow: 0 4px 15px rgba(255,255,255,0.15);
+      z-index: 1;
+    }
+    .bubble-left { width: 120px; height: 120px; bottom: 20px; left: 20px; }
+    .bubble-right-big { width: 180px; height: 180px; bottom: 40px; right: 40px; }
+    .bubble-right-small { width: 100px; height: 100px; bottom: 100px; right: 80px; }
+
+    /* Back button */
+    .back-btn {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background-color: white;
+      color: #2575fc;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 0.9em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, color 0.3s ease, border 0.3s ease;
+      z-index: 5;
+      text-decoration: none;
+    }
+    .back-btn:hover {
+      background-color: transparent;
+      color: white;
+      border: 2px solid white;
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+    }
+    .back-btn svg { width: 16px; height: 16px; fill: currentColor; }
+
+    /* Main container */
+    .content-container {
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(15px);
+      border-radius: 20px;
+      width: 90%;
+      max-width: 800px;
+      padding: 40px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+      position: relative;
+      z-index: 2;
+      color: white;
+      line-height: 1.6;
+      max-height: 85vh;
+      overflow-y: auto;
+    }
+
+    /* Scrollbar */
+    .content-container::-webkit-scrollbar { width: 8px; }
+    .content-container::-webkit-scrollbar-thumb { background-color: rgba(255,255,255,0.3); border-radius: 4px; }
+
+    h1 {
+      font-size: 2em;
+      margin-bottom: 20px;
+      letter-spacing: 0.5px;
+      background: linear-gradient(90deg, #fff, #ffd700, #fff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradientGlow 3s ease-in-out infinite;
+    }
+    p { font-size: 1.1em; margin-bottom: 15px; }
+    .highlight { font-weight: 600; color: #fff; }
+
+    /* Info container */
+    .info-container {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 20px;
+      margin-top: 20px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    }
+    .info-container p { margin: 8px 0; }
+    .info-container a { color: #fff; text-decoration: underline; }
+    .info-container a:hover { color: #ffd700; }
+
+    /* Social Media icons */
+    .social-media-container .social-icons {
+      display: flex;
+      justify-content: center; /* center horizontally */
+      gap: 25px; /* space between icons */
+      margin-top: 10px;
+    }
+    .social-media-container .social-icons a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .social-media-container .social-icons img {
+      width: 40px;
+      height: 40px;
+      transition: transform 0.3s ease;
+    }
+    .social-media-container .social-icons a:hover img { transform: scale(1.2); }
+
+    /* Gradient icon filters */
+    .facebook { filter: invert(34%) sepia(84%) saturate(4191%) hue-rotate(204deg) brightness(93%) contrast(93%); }
+    .instagram { filter: invert(36%) sepia(73%) saturate(3303%) hue-rotate(320deg) brightness(94%) contrast(95%); }
+    .twitter { filter: invert(55%) sepia(89%) saturate(6280%) hue-rotate(189deg) brightness(95%) contrast(101%); }
+    .linkedin { filter: invert(29%) sepia(68%) saturate(4942%) hue-rotate(191deg) brightness(97%) contrast(92%); }
+    .youtube { filter: invert(21%) sepia(90%) saturate(6229%) hue-rotate(356deg) brightness(96%) contrast(101%); }
+
+    @keyframes gradientGlow { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+
+    @media (max-width: 600px) {
+      .content-container { padding: 25px; }
+      h1 { font-size: 1.5em; }
+      p { font-size: 1em; }
+      .social-media-container .social-icons { gap: 15px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Bubbles -->
+  <div class="bubble bubble-left"></div>
+  <div class="bubble bubble-right-big"></div>
+  <div class="bubble bubble-right-small"></div>
+
+  <!-- Back button -->
+  <a href="/" class="back-btn">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Back
+  </a>
+
+  <div class="content-container">
+    <h1>Samta Foundation Officers</h1>
+    <span class="highlight">Samta Foundation</span> is providing free services in rural and tribal areas across Maharashtra where there is limited access to healthcare services.<br> 
+    A key component of our program is cataract cure services, where our officers coordinate with local government authorities and hospitals to support patients through the entire Cataract Cure life cycle; from transportation to camps, eye checkups, surgery and post-operative care. If you know someone who can benefit from our cataract surveys and free cataract camps, reach out to any of our Samta Officers listed below.
+
+    <div class="info-container">
+      <p><strong class="highlight">Contact Us</strong><br>
+      <span class="highlight">Mumbai:</span> Suhas Latkar : +91 9284752027<br>
+      <span class="highlight">Chh. Sambahjinagar:</span> Mohan Kendre: +91 9765687038<br>
+      <span class="highlight">Risod:</span> Ravindra Garje: +91 8275200736</p>
+    </div>
+
+    <div class="info-container">
+      <p><strong class="highlight">Address:</strong> Samta Foundation initiative of Manaalal Agrawal Skill & Technical Institute,<br>
+      Risod (444506), Maharashtra, India</p>
+      <p><strong class="highlight">Email:</strong> 
+        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=samta@samtafoundation.org" target="_blank">
+          samta@samtafoundation.org
+        </a>
+      </p>
+      <p><strong class="highlight">Phone:</strong> <a href="tel:+919876543210">+91 98765 43210</a></p>
+    </div>
+
+    <!-- Social Media -->
+<div class="info-container social-media-container">
+  <p><strong class="highlight">Follow Us</strong></p>
+  <div class="social-icons">
+    
+    <!-- Samta Foundation Logo -->
+    <a href="https://samtafoundation.org/" target="_blank" aria-label="Samta Foundation">
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="Samta Foundation" style="width: 45px; height: 45px;">
+    </a>
+    <a href="https://www.facebook.com/samta.fdn#" target="_blank" aria-label="Facebook">
+      <img class="facebook" src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt="Facebook">
+    </a>
+    <a href="https://www.instagram.com/samta_foundation/#" target="_blank" aria-label="Instagram">
+      <img class="instagram" src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram">
+    </a>
+    <a href="https://x.com/samta_fdn" target="_blank" aria-label="Twitter">
+      <img class="twitter" src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/twitter.svg" alt="Twitter">
+    </a>
+    <a href="https://www.linkedin.com/company/72699630" target="_blank" aria-label="LinkedIn">
+      <img class="linkedin" src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/linkedin.svg" alt="LinkedIn">
+    </a>
+    <a href="https://www.youtube.com/@samtafoundation813" target="_blank" aria-label="YouTube">
+      <img class="youtube" src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/youtube.svg" alt="YouTube">
+    </a>
+  </div>
+</div>
+  </div>
+
+  <script>
+    // Reload page if loaded from back/forward cache
+    window.addEventListener("pageshow", function(event) {
+      if (event.persisted) { window.location.reload(); }
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+      document.body.classList.add("loaded");
+
+      // Intercept same-origin links to play fade-out
+      document.querySelectorAll("a").forEach(link => {
+        try {
+          const sameHost = (link.hostname === window.location.hostname);
+          const target = link.getAttribute("target");
+          if (sameHost && target !== "_blank") {
+            link.addEventListener("click", function (e) {
+              const href = this.getAttribute("href");
+              if (!href) return;
+              if (href.startsWith("#")) return;
+              e.preventDefault();
+              document.body.classList.remove("loaded");
+              document.body.classList.add("fade-out");
+              setTimeout(() => { window.location.href = href; }, 300);
+            });
+          }
+        } catch (err) {
+          // ignore
+        }
+      });
+    });
+  </script>
+</body>
+</html>
+ 
