@@ -47,18 +47,18 @@ It is built with **Python (Flask)** for the backend and **HTML/CSS** for the fro
 ## 📂 Project Structure
 
 SamtaSaathi-Chatbot/
-├── app.py                  # Flask backend
-├── templates/
-│   ├── index.html          # Main chatbot interface
-│   ├── start_chat.html     # Start chat page
-│   ├── about.html          # About section
-│   ├── contact.html        # Contact section
-│   └── help.html           # Help section
-├── static/
-│   └── style.css           # Styling
-├── README.md               # Project details
-├── LICENSE                 # License file
-└── .gitignore              # Git ignore rules
+- app.py                  # Flask backend
+- templates/
+  - index.html            # Main chatbot interface
+  - start_chat.html       # Start chat page
+  - about.html            # About section
+  - contact.html          # Contact section
+  - help.html             # Help section
+- static/
+  - style.css             # Styling
+- README.md               # Project details
+- LICENSE                 # License file
+- .gitignore              # Git ignore rules
 
 
 ## 👤 Author
