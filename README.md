@@ -65,8 +65,7 @@ SamtaSaathi-Chatbot/
 ## 👤 Author
 **Rudra Khandelwal**  
 B.Tech CSE (2027) | Rashtrasant Tukadoji Maharaj Nagpur University  
-[LinkedIn](https://www.linkedin.com/) | [GitHub](https://github.com/rudra-khandelwal)
-
+[LinkedIn](www.linkedin.com/in/rudra-khandelwal-243a75373) 
 
 
  
